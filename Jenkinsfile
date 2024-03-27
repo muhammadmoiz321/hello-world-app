@@ -14,7 +14,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker build -t helloworld .'
-                sh 'docker run -d -p 8081:3000 helloworld'
+                sh 'docker run -d -p 3000:3000 helloworld'
             }
         }
     }
