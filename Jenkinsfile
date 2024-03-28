@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Build') {
             steps {
@@ -13,7 +13,7 @@ pipeline {
                 script {
                     def port = 8081
                     try {
-                        // In Windows, you can use 'netstat' to check for processes using a port
+                        // Use 'netstat' to check for processes using a port
                         def processes = sh(script: "netstat -ano | findstr :${port}", returnStdout: true).trim()
                         if (processes) {
                             // Terminate the process using the port
