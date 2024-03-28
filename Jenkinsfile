@@ -2,14 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/muhammadmoiz321/hello-world-app.git'
-            }
-        }
-
-
-
         stage('Build') {
             steps {
                 sh 'npm install'
