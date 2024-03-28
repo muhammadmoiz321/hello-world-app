@@ -11,11 +11,11 @@ pipeline {
         stage('Check Port Availability') {
             steps {
                 script {
-                    def port = 8081
-                    def processes = sh(script: "lsof -ti:${port}", returnStdout: true).trim()
-                    if (processes) {
-                        sh "kill -9 ${processes}" 
-                    }
+                      def port = 8081
+                      sh "lsof -ti:${port} || true" // Execute lsof, but allow failure
+                      echo "Check Port Availability completed"
+        }
+
                 }
             }
         }
