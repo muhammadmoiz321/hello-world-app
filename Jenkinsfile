@@ -13,8 +13,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Modify this line to remove the 'nohup' command
-                sh 'docker build -t helloworld .'
-                sh 'docker run -d -p 8081:3000 helloworld'
+                bat 'docker build -t helloworld .'
+                bat 'docker run -d -p 8081:3000 helloworld'
             }
         }
     }
