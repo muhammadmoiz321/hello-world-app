@@ -12,12 +12,10 @@ pipeline {
             steps {
                 script {
                     def port = 8081
-                    try {
-                        sh "lsof -ti:${port}"
-                    } catch (Exception e) {
-                        echo "Port ${port} is not in use"
+                    def isPortAvailable = sh(script: "netstat -tuln | grep ${port} | wc -l", returnStdout: true).trim() == "0"
+                    if (!isPortAvailable) {
+                        sh "lsof -ti:${port} | xargs kill"
                     }
-                    echo "Check Port Availability completed"
                 }
             }
         }
@@ -27,13 +25,8 @@ pipeline {
                 DOCKER_HOST = 'tcp://192.168.1.85:2375' // Replace with the IP address of your Docker host
             }
             steps {
-                script {
-                    sh 'docker build -t helloworld .'
-                    sh 'docker run -d -p 8081:3000 helloworld'
-                    def containerId = sh(script: 'docker ps -lq', returnStdout: true).trim()
-                    def containerIp = sh(script: "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $containerId", returnStdout: true).trim()
-                    echo "Container IP Address: ${containerIp}"
-                }
+                sh 'docker build -t helloworld .'
+                sh 'docker run -d -p 8081:3000 helloworld'
             }
         }
     }
