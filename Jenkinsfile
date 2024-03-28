@@ -30,7 +30,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker build -t helloworld .'
-                sh 'docker run -d -p 8081:3000 helloworld'
+                retry(3) {
+                    sh 'docker run -d -p 8081:3000 helloworld'
+                }
             }
         }
     }
