@@ -11,12 +11,17 @@ pipeline {
         stage('Check Port Availability') {
             steps {
                 script {
-                    def port = 8081
+                    /*def port = 8081
                     def isPortAvailable = sh(script: "netstat -tuln | grep ${port} | wc -l", returnStdout: true).trim() == "0"
                     if (!isPortAvailable) {
                         sh "lsof -ti:${port} | xargs kill"
-                    }
-                }
+                        }*/
+                    def port = 8081
+                    def processes = sh(script: "lsof -ti:${port}", returnStdout: true).trim()
+                    if (processes) {
+                           sh "kill -9 ${processes}"
+                      }
+                
             }
         }
         
