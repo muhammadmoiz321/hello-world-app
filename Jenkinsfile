@@ -12,8 +12,11 @@ pipeline {
             steps {
                 script {
                     def port = 8081
-                    // Execute lsof, but allow failure
-                    sh "lsof -ti:${port}" || true
+                    try {
+                        sh "lsof -ti:${port}"
+                    } catch (Exception e) {
+                        echo "Port ${port} is not in use"
+                    }
                     echo "Check Port Availability completed"
                 }
             }
@@ -27,6 +30,9 @@ pipeline {
                 script {
                     sh 'docker build -t helloworld .'
                     sh 'docker run -d -p 8081:3000 helloworld'
+                    def containerId = sh(script: 'docker ps -lq', returnStdout: true).trim()
+                    def containerIp = sh(script: "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $containerId", returnStdout: true).trim()
+                    echo "Container IP Address: ${containerIp}"
                 }
             }
         }
