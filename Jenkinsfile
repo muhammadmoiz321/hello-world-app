@@ -23,7 +23,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker build -t helloworld .'
-                sh 'docker run -d -p 8081:3000 helloworld'
+                docker run -d --network=host -p 8081:3000 helloworld
+
             }
         }
     }
