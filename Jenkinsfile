@@ -12,15 +12,20 @@ pipeline {
             steps {
                 script {
                     def port = 8081
-                    def processes = sh(script: "lsof -ti:${port}", returnStdout: true).trim()
-                    if (processes) {
-                        sh "kill -9 ${processes}"
-                    } else {
-                        echo "No process found on port ${port}"
+                    try {
+                        def processes = sh(script: "lsof -ti:${port}", returnStdout: true).trim()
+                        if (processes) {
+                            sh "kill ${processes}"
+                            echo "Terminated processes on port ${port}"
+                        } else {
+                            echo "No process found on port ${port}"
+                        }
+                    } catch (Exception e) {
+                        echo "Error checking port availability: ${e.message}"
                     }
                 }
-                }
             }
+        }
         
         stage('Deploy') {
             steps {
