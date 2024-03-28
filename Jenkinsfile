@@ -11,11 +11,10 @@ pipeline {
         stage('Check Port Availability') {
             steps {
                 script {
-                      def port = 8081
-                      sh "lsof -ti:${port} || true" // Execute lsof, but allow failure
-                      echo "Check Port Availability completed"
-        }
-
+                    def port = 8081
+                    // Execute lsof, but allow failure
+                    sh "lsof -ti:${port}" || true
+                    echo "Check Port Availability completed"
                 }
             }
         }
