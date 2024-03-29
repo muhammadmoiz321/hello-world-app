@@ -9,14 +9,11 @@ pipeline {
         }
         stage('SonarQube Scan') {
             environment {
-                // Define the scannerHome variable using the tool step
-                //scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 scannerHome = tool 'sonar-scanner'
             }
             steps {
                 // Execute SonarQube Scanner
                 withSonarQubeEnv('server-sonar') {
-                    //bat "${scannerHome}/bin/sonar-scanner.bat -Dsonar.projectKey="Hello_world_app" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_dac37b7b9ef8d7dd1d61030888cd69ce38bd53fc""
                         bat "${scannerHome}/bin/sonar-scanner.bat -Dsonar.projectKey=Hello_world_app -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000"
                 }
             }
