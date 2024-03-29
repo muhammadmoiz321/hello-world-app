@@ -16,7 +16,7 @@ pipeline {
             steps {
                 // Execute SonarQube Scanner
                 withSonarQubeEnv('server-sonar') {
-                    bat "${scannerHome}/bin/sonar-scanner.bat"
+                    bat "${scannerHome}/bin/sonar-scanner.bat -D"sonar.projectKey=Hello_world_app" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_dac37b7b9ef8d7dd1d61030888cd69ce38bd53fc""
                 }
             }
         }
