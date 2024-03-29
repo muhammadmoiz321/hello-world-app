@@ -7,6 +7,14 @@ pipeline {
                 bat 'npm install'
             }
         }
+        stage('SonarQube Scan') {
+            steps {
+                // Execute SonarQube Scanner
+                withSonarQubeEnv('server-sonar') {
+                    bat 'sonar-scanner'
+                }
+            }
+        }
 
         stage('Deploy') {
             steps {
