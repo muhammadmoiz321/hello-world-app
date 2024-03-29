@@ -8,14 +8,14 @@ pipeline {
             }
         }
         stage('SonarQube Scan') {
-            steps {
-                environment {
-                scannerHome = tool 'SonarQubeScanner'
+            environment {
+                // Define the scannerHome variable using the tool step
+                scannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
             }
+            steps {
                 // Execute SonarQube Scanner
                 withSonarQubeEnv('server-sonar') {
                     bat "${scannerHome}/bin/sonar-scanner.bat"
-                    
                 }
             }
         }
@@ -29,4 +29,3 @@ pipeline {
         }
     }
 }
-
