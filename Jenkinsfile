@@ -11,7 +11,7 @@ pipeline {
             steps {
                 // Execute SonarQube Scanner
                 withSonarQubeEnv('server-sonar') {
-                    bat 'sonar-scanner'
+                    bat "${scannerHome}/bin/sonar-scanner.bat"
                 }
             }
         }
